@@ -149,20 +149,31 @@ aboveRow n state = last (take (findY state - n + 1) state)
 below n state = last(take (findX state + 1) (belowRow n state))
 belowRow n state = last (take (findY state + n + 1) state)
 
+findX :: [[Char]] -> Int
 findX state = minimum (map length (map (takeWhile(/= 'O')) state))
 
+findY :: [[Char]] -> Int
 findY state = fromJust (elemIndex (findX state) (map length (map (takeWhile(/= 'O')) state)))
 
+keyCheck :: [[Char]] -> Bool
 keyCheck state = any (==True) (map (elem '!') state)
 
+completeCheck :: [[Char]] -> Bool
 completeCheck state = elem "Complete!" state
 
+display :: [[Char]] -> IO()
 display state = putStr("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" ++ concat (map (++"\n") state))
 
-duplicateList l = l ++ "\n" ++ l
-duplicateChar c = [c, c]
-duplicateChars str = concat (map (duplicateChar) str)
+duplicateStr :: [Char] -> [Char]
+duplicateStr s = s ++ "\n" ++ s
 
+duplicateChar :: Char -> [Char]
+duplicateChar c = [c, c]
+
+duplicateChars :: [Char] -> [Char]
+duplicateChars cs = concat (map (duplicateChar) cs)
+
+displayBig :: [[Char]] -> IO()
 displayBig state = if (completeCheck state)
                     then display state
-                    else display (map duplicateList (map duplicateChars state))
+                    else display (map duplicateStr (map duplicateChars state))
