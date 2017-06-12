@@ -1,6 +1,6 @@
 module BlockGame where
 
-import IOActions
+import Data.List
 import System.IO
 import Data.Maybe
 
@@ -170,4 +170,3 @@ duplicateChars str = concat (map (duplicateChar) str)
 displayBig state = if (completeCheck state)
                     then display state
                     else display (map duplicateList (map duplicateChars state))
-
