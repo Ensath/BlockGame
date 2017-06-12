@@ -102,18 +102,18 @@ move m state =
 
 moveLeftRow row = 
  if ("-O" `isInfixOf` row  || "!O" `isInfixOf` row) 
-  then init(takeWhile(< 'O') (row)) ++ "O-" ++ tail(dropWhile(< 'O') (row));
+  then init(takeWhile(/= 'O') (row)) ++ "O-" ++ tail(dropWhile(/= 'O') (row));
   else if ("-@O" `isInfixOf` row)
-        then init(init(takeWhile(/= 'O') row)) ++ "@O-" ++ tail(dropWhile(< 'O') (row));
+        then init(init(takeWhile(/= 'O') row)) ++ "@O-" ++ tail(dropWhile(/= 'O') (row));
         else row
 
 moveLeft state = map moveLeftRow state
 
 moveRightRow row = 
  if ("O-" `isInfixOf` row || "O!" `isInfixOf` row) 
-  then (takeWhile(< 'O') (row)) ++ "-O" ++ tail(tail(dropWhile(< 'O') (row)));
+  then (takeWhile(/= 'O') (row)) ++ "-O" ++ tail(tail(dropWhile(/= 'O') (row)));
   else if ("O@-" `isInfixOf` row)
-        then (takeWhile(< 'O') (row)) ++ "-O@" ++ tail(tail(tail(dropWhile(< 'O') (row))));
+        then (takeWhile(/= 'O') (row)) ++ "-O@" ++ tail(tail(tail(dropWhile(/= 'O') (row))));
         else row
 
 moveRight state = map moveRightRow state
@@ -138,7 +138,7 @@ enterRow state row = take (findX state) row ++ "O" ++ drop (findX state + 1) row
 
 clearRow row =
  if ("O" `isInfixOf` row) 
-  then (takeWhile(< 'O') (row)) ++ "-" ++ (tail(dropWhile(< 'O') (row)));
+  then (takeWhile(/= 'O') (row)) ++ "-" ++ (tail(dropWhile(/= 'O') (row)));
   else row
 
 pushRow state row = take (findX state) row ++ "@" ++ drop (findX state + 1) row 
@@ -153,9 +153,9 @@ belowRow state = last (take (findY state + 2) state)
 below2 state = last(take (findX state + 1) (last (take (findY state + 3) state)))
 belowRow2 state = last (take (findY state + 3) state)
 
-findX state = minimum (map length (map (takeWhile(< 'O')) state))
+findX state = minimum (map length (map (takeWhile(/= 'O')) state))
 
-findY state = fromJust (elemIndex (findX state) (map length (map (takeWhile(< 'O')) state)))
+findY state = fromJust (elemIndex (findX state) (map length (map (takeWhile(/= 'O')) state)))
 
 keyCheck state = any (==True) (map (elem '!') state)
 
