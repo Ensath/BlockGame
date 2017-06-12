@@ -143,14 +143,14 @@ clearRow row =
 
 pushRow state row = take (findX state) row ++ "@" ++ drop (findX state + 1) row 
 
-above state = last(take (findX state + 1) (last (take (findY state) state)))
+above state = last(take (findX state + 1) (aboveRow state))
 aboveRow state = last (take (findY state) state)
-above2 state = last(take (findX state + 1) (last (take (findY state - 1) state)))
+above2 state = last(take (findX state + 1) (aboveRow2 state))
 aboveRow2 state = last (take (findY state - 1) state)
 
-below state = last(take (findX state + 1) (last (take (findY state + 2) state)))
+below state = last(take (findX state + 1) (belowRow state))
 belowRow state = last (take (findY state + 2) state)
-below2 state = last(take (findX state + 1) (last (take (findY state + 3) state)))
+below2 state = last(take (findX state + 1) (belowRow2 state))
 belowRow2 state = last (take (findY state + 3) state)
 
 findX state = minimum (map length (map (takeWhile(/= 'O')) state))
