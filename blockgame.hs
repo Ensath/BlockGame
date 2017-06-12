@@ -119,19 +119,19 @@ moveRightRow row =
 moveRight state = map moveRightRow state
 
 moveUp state = 
- if (above state == '-' || above(state) == '!')
-  then init(takeWhile (notElem 'O') state) ++ [enterRow state (aboveRow state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
-  else if (above(state) == '@' && above2(state) == '-')
-        then init(init(takeWhile (notElem 'O') state)) ++ [pushRow state (aboveRow2 state)] ++ [enterRow state (aboveRow state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
-        else if (above(state) == '#' && not (keyCheck(state)))
+ if (above 1 state == '-' || above 1 state == '!')
+  then init(takeWhile (notElem 'O') state) ++ [enterRow state (aboveRow 1 state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
+  else if (above 1 state == '@' && above 2 state == '-')
+        then init(init(takeWhile (notElem 'O') state)) ++ [pushRow state (aboveRow 2 state)] ++ [enterRow state (aboveRow 1 state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
+        else if (above 1 state == '#' && not (keyCheck(state)))
               then victory
               else state
 
 moveDown state = 
- if (below(state) == '-' || below(state) == '!')
-  then takeWhile (notElem 'O') state ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ [enterRow state (belowRow state)] ++ tail(tail(dropWhile (notElem 'O') state))
-  else if (below(state) == '@' && below2(state) == '-')
-        then takeWhile (notElem 'O') state ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ [enterRow state (belowRow state)] ++ [pushRow state (belowRow2 state)] ++ tail(tail(tail(dropWhile (notElem 'O') state)))
+ if (below 1 state == '-' || below 1 state == '!')
+  then takeWhile (notElem 'O') state ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ [enterRow state (belowRow 1 state)] ++ tail(tail(dropWhile (notElem 'O') state))
+  else if (below 1 state == '@' && below 2 state == '-')
+        then takeWhile (notElem 'O') state ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ [enterRow state (belowRow 1 state)] ++ [pushRow state (belowRow 2 state)] ++ tail(tail(tail(dropWhile (notElem 'O') state)))
         else state 
 
 enterRow state row = take (findX state) row ++ "O" ++ drop (findX state + 1) row 
@@ -143,15 +143,11 @@ clearRow row =
 
 pushRow state row = take (findX state) row ++ "@" ++ drop (findX state + 1) row 
 
-above state = last(take (findX state + 1) (aboveRow state))
-aboveRow state = last (take (findY state) state)
-above2 state = last(take (findX state + 1) (aboveRow2 state))
-aboveRow2 state = last (take (findY state - 1) state)
+above n state = last(take (findX state + 1) (aboveRow n state))
+aboveRow n state = last (take (findY state - n + 1) state)
 
-below state = last(take (findX state + 1) (belowRow state))
-belowRow state = last (take (findY state + 2) state)
-below2 state = last(take (findX state + 1) (belowRow2 state))
-belowRow2 state = last (take (findY state + 3) state)
+below n state = last(take (findX state + 1) (belowRow n state))
+belowRow n state = last (take (findY state + n + 1) state)
 
 findX state = minimum (map length (map (takeWhile(/= 'O')) state))
 
