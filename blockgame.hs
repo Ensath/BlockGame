@@ -53,8 +53,8 @@ main = help
 info = help
 
 help :: IO()
-help = putStr "start levelN: Play the Nth level (currently there are six levels)\n\
-              \startBig levelN: Play the Nth level with each game element represented by a 2x2 block of characters\n\
+help = putStr "play levelN: Play the Nth level (currently there are six levels)\n\
+              \playBig levelN: Play the Nth level with each game element represented by a 2x2 block of characters\n\
               \manual: Display the manual for the game\n\n"
 
 man = manual
@@ -70,6 +70,30 @@ manual = putStr "\
 \@: Blocks (you can push them around)\n\
 \-: Open space\n\
 \=: Walls\n\n" 
+
+play :: [[Char]] -> IO()
+play state = do
+ display state
+ c <- getChar
+ case c of 
+  'a' -> play (moveLeft state)
+  'd' -> play (moveRight state)
+  'w' -> play (moveUp state)
+  's' -> play (moveDown state)
+  '\^[' -> putStr "Quit]^\n"
+  c -> play (state)
+
+playBig :: [[Char]] -> IO()
+playBig state = do
+ displayBig state
+ c <- getChar
+ case c of 
+  'a' -> playBig (moveLeft state)
+  'd' -> playBig (moveRight state)
+  'w' -> playBig (moveUp state)
+  's' -> playBig (moveDown state)
+  '\^[' -> putStr "Quit]^\n"
+  c -> playBig (state)
 
 start :: [[Char]] -> IO a
 start state = do
