@@ -133,7 +133,7 @@ moveUp state =
   then init(takeWhile (notElem 'O') state) ++ [enterRow state (aboveRow 1 state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
   else if (above 1 state == '@' && above 2 state == '-')
         then init(init(takeWhile (notElem 'O') state)) ++ [pushRow state (aboveRow 2 state)] ++ [enterRow state (aboveRow 1 state)] ++ [clearRow(head(dropWhile (notElem 'O') state))] ++ tail(dropWhile (notElem 'O') state)
-        else if (above 1 state == '#' && not (keyCheck(state)))
+        else if (above 1 state == '#' && not (keyCheck state))
               then victory
               else state
 
