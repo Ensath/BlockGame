@@ -63,7 +63,7 @@ manual :: IO()
 manual = putStr "\
 \Welcome to Block Game!\n\
 \Move with WASD.\n\
-\Quit with CTRL+C.\n\
+\Quit with ESC.\n\
 \O: You\n\
 \#: Door (the goal)\n\
 \!: Keys (collect all keys to unlock the door)\n\
